@@ -1,0 +1,202 @@
+[
+  {
+    "origin": "São Paulo, SP",
+    "destination": "Rio de Janeiro, RJ",
+    "distanceInKm": 430
+  },
+  {
+    "origin": "São Paulo, SP",
+    "destination": "Brasília, DF",
+    "distanceInKm": 1015
+  },
+  {
+    "origin": "Rio de Janeiro, RJ",
+    "destination": "Brasília, DF",
+    "distanceInKm": 1148
+  },
+  {
+    "origin": "São Paulo, SP",
+    "destination": "Belo Horizonte, MG",
+    "distanceInKm": 586
+  },
+  {
+    "origin": "Rio de Janeiro, RJ",
+    "destination": "Belo Horizonte, MG",
+    "distanceInKm": 434
+  },
+  {
+    "origin": "São Paulo, SP",
+    "destination": "Curitiba, PR",
+    "distanceInKm": 408
+  },
+  {
+    "origin": "São Paulo, SP",
+    "destination": "Porto Alegre, RS",
+    "distanceInKm": 1120
+  },
+  {
+    "origin": "São Paulo, SP",
+    "destination": "Salvador, BA",
+    "distanceInKm": 1962
+  },
+  {
+    "origin": "São Paulo, SP",
+    "destination": "Recife, PE",
+    "distanceInKm": 2660
+  },
+  {
+    "origin": "São Paulo, SP",
+    "destination": "Fortaleza, CE",
+    "distanceInKm": 3120
+  },
+  {
+    "origin": "Rio de Janeiro, RJ",
+    "destination": "Salvador, BA",
+    "distanceInKm": 1650
+  },
+  {
+    "origin": "Brasília, DF",
+    "destination": "Goiânia, GO",
+    "distanceInKm": 209
+  },
+  {
+    "origin": "Curitiba, PR",
+    "destination": "Florianópolis, SC",
+    "distanceInKm": 300
+  },
+  {
+    "origin": "Curitiba, PR",
+    "destination": "Porto Alegre, RS",
+    "distanceInKm": 711
+  },
+  {
+    "origin": "Florianópolis, SC",
+    "destination": "Porto Alegre, RS",
+    "distanceInKm": 476
+  },
+  {
+    "origin": "Salvador, BA",
+    "destination": "Recife, PE",
+    "distanceInKm": 839
+  },
+  {
+    "origin": "Recife, PE",
+    "destination": "Fortaleza, CE",
+    "distanceInKm": 800
+  },
+  {
+    "origin": "Fortaleza, CE",
+    "destination": "Natal, RN",
+    "distanceInKm": 537
+  },
+  {
+    "origin": "Belo Horizonte, MG",
+    "destination": "Brasília, DF",
+    "distanceInKm": 741
+  },
+  {
+    "origin": "Manaus, AM",
+    "destination": "Brasília, DF",
+    "distanceInKm": 3490
+  },
+  {
+    "origin": "São Paulo, SP",
+    "destination": "Campinas, SP",
+    "distanceInKm": 95
+  },
+  {
+    "origin": "São Paulo, SP",
+    "destination": "Santos, SP",
+    "distanceInKm": 72
+  },
+  {
+    "origin": "São Paulo, SP",
+    "destination": "Sorocaba, SP",
+    "distanceInKm": 87
+  },
+  {
+    "origin": "São Paulo, SP",
+    "destination": "Ribeirão Preto, SP",
+    "distanceInKm": 313
+  },
+  {
+    "origin": "São Paulo, SP",
+    "destination": "São José dos Campos, SP",
+    "distanceInKm": 94
+  },
+  {
+    "origin": "Campinas, SP",
+    "destination": "Ribeirão Preto, SP",
+    "distanceInKm": 233
+  },
+  {
+    "origin": "Rio de Janeiro, RJ",
+    "destination": "Niterói, RJ",
+    "distanceInKm": 13
+  },
+  {
+    "origin": "Rio de Janeiro, RJ",
+    "destination": "Petrópolis, RJ",
+    "distanceInKm": 68
+  },
+  {
+    "origin": "Rio de Janeiro, RJ",
+    "destination": "Cabo Frio, RJ",
+    "distanceInKm": 140
+  },
+  {
+    "origin": "Rio de Janeiro, RJ",
+    "destination": "Angra dos Reis, RJ",
+    "distanceInKm": 151
+  },
+  {
+    "origin": "Belo Horizonte, MG",
+    "destination": "Ouro Preto, MG",
+    "distanceInKm": 100
+  },
+  {
+    "origin": "Belo Horizonte, MG",
+    "destination": "Uberlândia, MG",
+    "distanceInKm": 543
+  },
+  {
+    "origin": "Belo Horizonte, MG",
+    "destination": "Juiz de Fora, MG",
+    "distanceInKm": 272
+  },
+  {
+    "origin": "Porto Alegre, RS",
+    "destination": "Caxias do Sul, RS",
+    "distanceInKm": 129
+  },
+  {
+    "origin": "Porto Alegre, RS",
+    "destination": "Pelotas, RS",
+    "distanceInKm": 261
+  },
+  {
+    "origin": "Curitiba, PR",
+    "destination": "Foz do Iguaçu, PR",
+    "distanceInKm": 637
+  },
+  {
+    "origin": "Curitiba, PR",
+    "destination": "Londrina, PR",
+    "distanceInKm": 369
+  },
+  {
+    "origin": "Salvador, BA",
+    "destination": "Feira de Santana, BA",
+    "distanceInKm": 108
+  },
+  {
+    "origin": "Recife, PE",
+    "destination": "João Pessoa, PB",
+    "distanceInKm": 120
+  },
+  {
+    "origin": "Fortaleza, CE",
+    "destination": "Juazeiro do Norte, CE",
+    "distanceInKm": 491
+  }
+]

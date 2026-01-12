@@ -1,0 +1,46 @@
+<section class="results" aria-live="polite">
+    <div class="results__content">
+        <h2 class="section-title">📊 Resultado da Análise</h2>
+
+        <div class="results__grid">
+            <div class="results__card">
+                <div class="results__card-icon">🗺️</div>
+                <div class="results__card_label">Rota</div>
+                <div class="results__card-value">@EmissionsSummary?.Route</div>
+            </div>
+
+            <div class="results__card">
+                <div class="results__card-icon">📏</div>
+                <div class="results__card_label">Distância</div>
+                <div class="results__card-value">@EmissionsSummary?.DistanceInKm Km</div>
+            </div>
+
+            <div class="results__card results__card--highlight">
+                <div class="results__card-icon">🌿</div>
+                <div class="results__card_label">Emissão de CO₂</div>
+                <div class="results__card-value">@EmissionsSummary?.CarbonEmissionInKg.ToString("N2") Kg</div>
+            </div>
+
+            <div class="results__card">
+                <div class="results__card-icon">@EmissionsSummary?.Transport.Icon</div>
+                <div class="results__card_label">Meio de transporte</div>
+                <div class="results__card-value">@EmissionsSummary?.Transport.Name</div>
+            </div>
+
+            @if (EmissionsSummary?.Transport.Mode != TransportMode.Car)
+            {                
+                <div class="results__card results__card--success">
+                    <div class="results__card-icon">💚</div>
+                    <div class="results__card_label">Economia vs Carro</div>
+                    <div class="results__card-value">@EmissionsSummary?.Saving.SavedInKg.ToString("N2") Kg </div>
+                    <div class="results__card-subtitle">@EmissionsSummary?.Saving.SavedInPercentage.ToString("P1") menos emissão</div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+@code {
+    [Parameter]
+    public EmissionsSummary? EmissionsSummary { get; set; }
+}

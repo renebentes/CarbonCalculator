@@ -1,0 +1,77 @@
+@using System.Globalization
+
+<section class="comparison">
+    <div id="comparison-content" class="comparison__content">
+        <h2 class="section-title">🔍 Comparação entre Transportes</h2>
+        <div class="comparison__container">
+            @foreach (var item in ComparisonSummaryData.OrderBy(it => it.EmissionInKg))
+            {
+                _barWidth = _maxEmission > 0 ? item.EmissionInKg / _maxEmission : 0;
+
+                @if(item.PercentageVsCar <= 0.25)
+                {
+                    _barColor = "#10b981"; // Verde
+                }
+                else if (item.PercentageVsCar <= 0.75)
+                {
+                    _barColor = "#f59e0b"; // Amarelo
+                }
+                else if (item.PercentageVsCar <= 1)
+                {
+                    _barColor = "#fb923c"; // Laranja
+                }
+                else
+                {
+                    _barColor = "#ef4444"; // Vermelho
+                }
+
+                <div class="comparison__item @(item.IsSelected ? "comparison__item--selected" : "")">
+                    <div class="comparison__header">
+                        <div class="comparison__mode">
+                            <span class="comparison__icon">@item.Transport.Icon</span>
+                            <span class="comparison__label">@item.Transport.Name</span>
+                        </div>
+                        @if (item.IsSelected)
+                        {
+                            <span class="comparison__badge">Selecionado</span>
+                        }
+                    </div>
+
+                    <div class="comparison__stats">
+                        <div class="comparison__stat">
+                            <span class="comparison__stat-label">Emissão</span>
+                            <span class="comparison__stat-value">@item.EmissionInKg.ToString("N2") kg CO₂</span>
+                        </div>
+                        <div class="comparison__stat">
+                            <span class="comparison__stat-label">vs Carro</span>
+                            <span class="comparison__stat-value">@item.PercentageVsCar.ToString("P1")</span>
+                        </div>
+                    </div>
+
+                    <div class="comparison__bar-container">
+                    <div class="comparison__bar" style="width: @_barWidth.ToString("P", new CultureInfo("en-US")); background-color: @_barColor;"></div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="comparison__tip">
+            <strong>💡 Dica:</strong> Optar por transportes com menor emissão de CO₂ ajuda a reduzir
+            seu impacto ambiental e contribui para um planeta mais sustentável!
+        </div>
+    </div>
+</section>
+
+@code {
+    private double _maxEmission;
+    private string _barColor = string.Empty;
+    private double _barWidth;
+
+    [Parameter]
+    public IEnumerable<ComparisonSummaryData> ComparisonSummaryData { get; set; } = [];
+
+    protected override void OnInitialized()
+        => _maxEmission = ComparisonSummaryData
+            .Select(data => data.EmissionInKg)
+            .Max();
+}

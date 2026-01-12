@@ -1,0 +1,208 @@
+@page "/"
+
+@inject Calculator Calculator
+@inject ILogger<Home> Logger
+@inject RoutesManager RoutesManager
+@inject TransportsManager TransportModesManager
+
+<PageTitle>🌿Calculadora de Emissões de CO₂.</PageTitle>
+
+<EditForm Model="@Calculator"
+          OnValidSubmit="HandleSubmit"
+          id="calculator-form"
+          class="calculator-form">
+    <DataAnnotationsValidator />
+
+    <div class="calculator-form__group">
+        <label for="origin" class="calculator-form__label">Origem</label>
+        <InputText id="origin"
+                   list="cities-list"
+                   class="calculator-form__input"
+                   @bind-Value="Calculator.Origin"
+                   @onchange="() => TryGetDistance()" />
+        <ValidationMessage For="() => Calculator.Origin" />
+    </div>
+
+    <div class="calculator-form__group">
+        <label for="destination" class="calculator-form__label">Destino</label>
+        <InputText id="destination"
+                   list="cities-list"
+                   class="calculator-form__input"
+                   @bind-Value="Calculator.Destination"
+                   @onchange="() => TryGetDistance()" />
+        <ValidationMessage For="() => Calculator.Destination" />
+    </div>
+
+    <datalist id="cities-list">
+        @foreach (var city in _cities)
+        {
+            <option value="@city">@city</option>
+        }
+    </datalist>
+
+    <div class="calculator-form__group">
+        <label for="distance" class="calculator-form__label">Distância (Km)</label>
+        <InputNumber id="distance"
+                     class="calculator-form__input"
+                     @bind-Value="Calculator.DistanceInKm"
+                     aria-describedby="distance-help"
+                     readonly="@(!addManualDistance)" />
+
+        <small id="distance-help"
+               class="calculator-form__helper-text"
+               style="color: @distanceHelpColor;">@distanceHelpText</small>
+    </div>
+
+    <div class="calculator-form__group">
+        <label class="calculator-form__checkbox" for="manual-distance">
+            <input type="checkbox"
+                   id="manual-distance"
+                   class="calculator-form__checkbox-input"
+                   @onclick="() => AllowAddManualDistance()" />
+
+            <span class="calculator-form__checkbox-label">Inserir distância manualmente</span>
+        </label>
+    </div>
+
+    <div class="calculator-form__group">
+        <label class="calculator-form__label" for="transport">Meio de Transporte</label>
+        <div class="transport-grid">
+            <InputRadioGroup @bind-Value="Calculator.TransportMode" id="transport">
+                @foreach (var transport in _transports)
+                {
+                    <label class="transport-grid__option">
+                        <InputRadio class="transport-grid__input" Value="@transport.Mode" />
+                        <span class="transport-grid__label">
+                            <span class="transport-grid__icon">@transport.Icon</span>
+                            <span class="transport-grid__text">@transport.Name</span>
+                        </span>
+                    </label>
+                }
+                </InputRadioGroup>
+            </div>
+        </div>
+
+        <button type="submit" class="calculator-form__button">
+            @if(isBusy)
+            {
+                <span class="spinner"></span>
+            }
+
+            @submitButtonText
+    </button>
+    </EditForm>
+
+    @if (canShowResults)
+    {
+        <ResultSummary EmissionsSummary="@_emissionsSummary" />
+
+        <ComparisonSummary ComparisonSummaryData="@_comparisonSummaryData"/>
+
+        <CarbonCreditsSummary CarbonCreditsSummaryData="@_carbonCreditsSummaryData" />
+    }
+
+@code {
+    private IEnumerable<string> _cities = [];
+    private IEnumerable<Transport> _transports = [];
+    private string distanceHelpText = string.Empty;
+    private string distanceHelpColor = string.Empty;
+    private bool addManualDistance;
+    private bool canShowResults;
+    private bool isBusy = false;
+    private string submitButtonText = "Calcular Emissão";
+
+    private EmissionsSummary? _emissionsSummary;
+    private IEnumerable<ComparisonSummaryData> _comparisonSummaryData = [];
+    private CarbonCreditsSummaryData? _carbonCreditsSummaryData;
+
+    protected override async Task OnInitializedAsync()
+    {
+        distanceHelpText = "A distância será preenchida automaticamente";
+        _cities = await RoutesManager.GetAllCitiesAsync();
+        _transports = TransportModesManager.GetAllTransports();
+        Logger.LogInformation("✅ Calculadora inicializada!");
+    }
+
+    private async Task HandleSubmit()
+    {
+        try
+        {
+            isBusy = true;
+            submitButtonText = "Calculando..."; 
+            await Task.Delay(500);
+
+            var carbonEmissionInKg = Calculator.CalculateEmissionByMode(Calculator.SelectedTransport.Mode);
+            var carEmissionInKg = Calculator.CalculateEmissionByMode(TransportMode.Car);
+            var savings = Calculator.CalculateSavings(carbonEmissionInKg);
+
+            _emissionsSummary = new EmissionsSummary(
+                Calculator.Route,
+                Calculator.SelectedTransport,
+                carbonEmissionInKg,
+                carEmissionInKg,
+                Calculator.DistanceInKm,
+                savings);
+
+            _comparisonSummaryData = Calculator.CalculateAllEmissions();
+
+            double credits = Calculator.CalculateCarbonCredits(carbonEmissionInKg);
+            (double MinimumPriceInBrl, double MaximumPriceInBrl, double AveragePriceInBrl) estimatedPrices = Calculator.EstimateCreditsPrice(credits);
+            _carbonCreditsSummaryData = new(
+                credits,
+                estimatedPrices.MinimumPriceInBrl,
+                estimatedPrices.MaximumPriceInBrl,
+                estimatedPrices.AveragePriceInBrl);
+
+            canShowResults = true;
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex,"❌ Erro ao calcular a emissão");
+            throw;
+        }
+
+        submitButtonText = "Calcular Emissão";
+        isBusy = false;
+        StateHasChanged();
+    }
+
+    private void TryGetDistance()
+    {
+        if (!string.IsNullOrEmpty(Calculator.Origin)
+            && !string.IsNullOrEmpty(Calculator.Destination))
+        {
+            Calculator.DistanceInKm = 0;
+            addManualDistance = false;
+            int distance = RoutesManager.GetDistance(Calculator.Origin, Calculator.Destination);
+            if (distance > 0)
+            {
+                Calculator.DistanceInKm = distance;
+                distanceHelpText = "✓ Distância encontrada automaticamente";
+                distanceHelpColor = "#10b981";
+            }
+            else
+            {
+                distanceHelpText = "⚠️ Rota não encontrada. Por favor, marque a opção para inserir manualmente.";
+                distanceHelpColor = "#ef4444";
+            }
+        }
+
+        StateHasChanged();
+    }
+
+    private void AllowAddManualDistance()
+    {
+        distanceHelpColor = "#6b7280";
+        if (!addManualDistance)
+        {
+            addManualDistance = true;
+            distanceHelpText = "Insira a distância manualmente.";
+        }
+        else
+        {
+            addManualDistance = false;
+            distanceHelpText = "A distância será preenchida automaticamente.";
+            TryGetDistance();
+        }
+    }
+}

@@ -1,0 +1,53 @@
+<section class="carbon-credits">
+     <div class="carbon-credits__content">
+    <h2>🌳 Compensação de Carbono</h2>
+    <div class="carbon-credits__grid">
+        <div class="carbon-credits__card">
+            <div class="carbon-credits__card-header">
+                <span class="carbon-credits__icon">📜</span>
+                <h3 class="carbon-credits__card-title">Créditos Necessários</h3>
+            </div>
+            <div class="carbon-credits__card-body">
+                <div class="carbon-credits__value">@CarbonCreditsSummaryData?.Credits.ToString("N4")</div>
+                <div class="carbon-credits__helper">1 crédito = 1.000 kg CO₂</div>
+            </div>
+        </div>
+
+        <div class="carbon-credits__card">
+            <div class="carbon-credits__card-header">
+                <span class="carbon-credits__icon">💰</span>
+                <h3 class="carbon-credits__card-title">Valor Estimado</h3>
+            </div>
+            <div class="carbon-credits__card-body">
+                <div class="carbon-credits__value">@CarbonCreditsSummaryData?.AveragePriceInBrl.ToString("C")</div>
+                <div class="carbon-credits__helper">
+                    Faixa: @CarbonCreditsSummaryData?.MinimumPriceInBrl.ToString("C") - @CarbonCreditsSummaryData?.MaximumPriceInBrl.ToString("C")
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="carbon-credits__info">
+        <h4 class="carbon-credits__info-title">ℹ️ O que são Créditos de Carbono?</h4>
+        <p class="carbon-credits__info-text">
+            Créditos de carbono são certificados que representam a redução de uma tonelada (1.000 kg)
+            de CO₂ da atmosfera. Ao comprar créditos, você apoia projetos ambientais que compensam
+            suas emissões, como reflorestamento e energia renovável.
+        </p>
+    </div>
+
+    <div class="carbon-credits__action">
+        <button class="carbon-credits__button" type="button">
+            🛒 Compensar Emissões
+        </button>
+        <p class="carbon-credits__disclaimer">
+            * Este é um projeto demonstrativo. O botão não realiza transações reais.
+        </p>
+    </div>
+    </div>
+</section>
+
+@code {
+    [Parameter]
+    public CarbonCreditsSummaryData? CarbonCreditsSummaryData { get; set; }
+}
