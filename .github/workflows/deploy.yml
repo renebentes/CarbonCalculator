@@ -1,11 +1,12 @@
 name: Deploy Blazor WebAssembly to GitHub Pages
 env:
-  PUBLISH_DIR: src/CarbonCalculator/bin/Release/net10.0/publish/wwwroot
+  PUBLISH_PATH: deploy
+  PROJECT_PATH: src/CarbonCalculator/CarbonCalculator.csproj
 
 on:
   # Runs on pushes targeting the default branch for the app's folder path
   push:
-    branches: [ main ]
+    branches: [main]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -38,20 +39,20 @@ jobs:
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: '10.0.x'
+          dotnet-version: "10.0.x"
 
       - name: Restore NuGet packages
-        run: dotnet restore src/CarbonCalculator/CarbonCalculator.csproj
+        run: dotnet restore ${{env.PROJECT_PATH}}
 
       - name: Publish Blazor WebAssembly (Release)
         run: |
-          dotnet publish src/CarbonCalculator/CarbonCalculator.csproj -c Release -o src/CarbonCalculator/publish
+          dotnet publish ${{env.PROJECT_PATH}} -c Release -o ${{env.PUBLISH_PATH}} --nologo
 
       - name: Rewrite base href
         uses: SteveSandersonMS/ghaction-rewrite-base-href@v1
         with:
-          html_path: ${{ env.PUBLISH_DIR }}/index.html
-          base_href: /src/
+          html_path: ${{ env.PUBLISH_PATH }}/wwwroot/index.html
+          base_href: /CarbonCalculator/
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -59,7 +60,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
         with:
-          path: ${{ env.PUBLISH_DIR }}
+          path: ${{ env.PUBLISH_PATH }}/wwwroot
 
       - name: Deploy to GitHub Pages
         id: deployment
